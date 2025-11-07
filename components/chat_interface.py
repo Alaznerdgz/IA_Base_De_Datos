@@ -65,30 +65,41 @@ class ChatInterface:
                     self.add_message("assistant", error_msg)
     
 
-    def _create_context(self, user_prompt:str) -> str:
+    def _create_context(self, user_prompt: str) -> str:
         """
-        Crea el contexto para el prompt
+        Crea el contexto para traducir preguntas en lenguaje natural a SQL sobre la base de datos Pubs.
 
         Args:
             user_prompt: La pregunta del usuario
 
         Returns:
-            prompt completo con el contexto
+            Prompt completo con el contexto
         """
 
-        context= f"""
-        Eres DevMentor AI, un asistente especializado en desarrollo de software-
-        Tu objetivo es ayudar a desarrolladores con sus preguntas técnicas proporcionando:
+        context = f"""
+        Eres MartAI, un asistente experto en bases de datos SQL Server.
+        Tu tarea es traducir preguntas en lenguaje natural a consultas SQL válidas y precisas
+        sobre la base de datos "Pubs", sin ejecutar el código.
 
-        1. Explicaciones claras y precisas
-        2. Ejemplos de código cuando sea apropiado
-        3. Mejores prácticas de desarrollo
-        4. Soluciones paso a paso
+        Esquema de la base de datos Pubs:
+        - publishers(pub_id, pub_name, city, state, country)
+        - authors(au_id, au_lname, au_fname, phone, address, city, state, zip, contract)
+        - titles(title_id, title, type, pub_id, price, advance, royalty, ytd_sales, notes, pubdate)
+        - titleauthor(au_id, title_id, au_ord, royaltyper)
+        - stores(stor_id, stor_name, stor_address, city, state, zip)
+        - sales(stor_id, ord_num, ord_date, qty, payterms, title_id)
+
+        Reglas:
+        - Devuelve solo consultas SQL en formato texto.
+        - No ejecutes el SQL.
+        - Usa SELECT únicamente.
+        - Si no se especifica límite, aplica TOP 100 por defecto.
+        - No incluyas instrucciones peligrosas como DROP, DELETE, UPDATE, INSERT, ALTER, EXEC.
 
         Pregunta del usuario: {user_prompt}
 
-        Responde de manera útil y educativa
-"""
+        Devuelve solo la consulta SQL correspondiente, sin explicaciones adicionales.
+        """
         return context
     
     def add_message(self, role:str, msg:str):
@@ -129,10 +140,10 @@ class ChatInterface:
         if not st.session_state.messages:
             return "No hay mensajes para exportar"
         
-        export_text = "# Historial de Chat - DdevMentor AI\n\n"
+        export_text = "# Historial de Chat - MartAI\n\n"
 
         for i, message in enumerate(st.session_state.messages):
-            role = "👤 Usuario" if message["role"] == "user" else "🤖 DevMentor"
+            role = "👤 Usuario" if message["role"] == "user" else " 🕵️‍♀️ MartAI"
             export_text += f"## Mensaje {i} - {role}\n\n"
             export_text += f"{message['message']}\n\n"
             export_text += f"---\n\n"
