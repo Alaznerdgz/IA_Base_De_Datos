@@ -1,0 +1,1 @@
+# Cliente para conectarse a OpenAI
