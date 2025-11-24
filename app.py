@@ -1,5 +1,4 @@
-from components.chat_interface import ChatInterface
-from components.sidebar import create_sidebar
+from components import ChatInterface, create_sidebar
 
 import streamlit as st
 
@@ -11,7 +10,7 @@ st.set_page_config(
 
 create_sidebar()
 
-st.title("DevMentor AI")
+st.title("MartAI 🤖")
 
 chat = ChatInterface()
 
